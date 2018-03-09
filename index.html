@@ -28,18 +28,12 @@
         <input id="add-gif" type="submit" value="Add a Gif">
     </form>
 
+    <div id="gif-images"></div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-        var queryURL = "https://api.giphy.com/v1/gifs/trending?api_key=b1fXisc3fwrQJ2DnSiTIbnnLSpaUMdPl";
-
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function(response) {
-                console.log(response);
-            });
-        
+       
         //initial array of buttons
         var gifs = ["Cats", "Dogs", "Monkeys"]
         console.log(gifs);
@@ -59,10 +53,45 @@
             event.preventDefault();
             var gif = $("#gif-input").val().trim();
             gifs.push(gif);
-            renderButtons();
+            var a = $("<button>");
+                a.addClass("gif");
+                a.attr("data-name", gif);
+                a.text(gif);
+                $("#gif-buttons").append(a);
+                initializeButton();
+        });           
+        renderButtons();
+
+        initializeButton();
+
+    function initializeButton() {
+        $("button").on("click", function() {
+            var gifType = $(this).attr("data-name");
+            console.log(gifType);
+
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gifType + "&api_key=b1fXisc3fwrQJ2DnSiTIbnnLSpaUMdPl";
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function(response) {
+            $.each(response.data, function(k, v) {
+                console.log(v);
+                var image = v.images.downsized;
+                var a = $("<img>");
+                    a.attr("src", image.url);
+                    a.attr("height", image.height);
+                    a.attr("width", image.width);
+                var rating = v.rating;
+                var r = $("<p>");
+                    r.text(rating)
+                $("#gif-images").prepend(a, r);
+            });
+        });
         });
         
-        renderButtons();
+    }
+        
     </script>
 </div>
 </body>
