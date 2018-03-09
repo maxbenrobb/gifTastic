@@ -1,0 +1,14 @@
+button,
+div,
+form,
+input {
+  margin: 10px;
+}
+
+body {
+    background-color: rgb(193, 236, 236);
+}
+
+img {
+    margin: 1px;
+}
