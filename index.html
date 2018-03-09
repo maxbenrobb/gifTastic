@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Get Giphy</title>
+
+    <style type="text/css">
+        button,
+        div,
+        form,
+        input {
+          margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- where buttons should go -->
+    <div id="gif-buttons"></div>
+
+    <form id="gif-form">
+        <label for="gif-input">Add a Gif category!</label>
+        <input type="text" id="gif-input"><br>
+
+        <input id="add-gif" type="submit" value="Add a Gif">
+    </form>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        var queryURL = "https://api.giphy.com/v1/gifs/trending?api_key=b1fXisc3fwrQJ2DnSiTIbnnLSpaUMdPl";
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function(response) {
+                console.log(response);
+            });
+        
+        //initial array of buttons
+        var gifs = ["Cats", "Dogs", "Monkeys"]
+        console.log(gifs);
+
+        //function for displaying movie buttons
+        function renderButtons(){
+            for (var i = 0; i < gifs.length; i++) {
+                var a = $("<button>");
+                a.addClass("gif");
+                a.attr("data-name", gifs[i]);
+                a.text(gifs[i]);
+                $("#gif-buttons").append(a);
+            }
+        }
+
+        $("#add-gif").on("click", function(event) {
+            event.preventDefault();
+            var gif = $("#gif-input").val().trim();
+            gifs.push(gif);
+            renderButtons();
+        });
+        
+        renderButtons();
+    </script>
+</div>
+</body>
+</html>
